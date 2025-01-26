@@ -9,3 +9,5 @@ services:
     ports:
       - "27015:27015/tcp"
       - "27015:27015/udp"
+    volumes:
+      - ./server.cfg:/home/steamsrv/dystopia/dystopia/cfg/server.cfg
