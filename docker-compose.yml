@@ -1,0 +1,11 @@
+services:
+  dys-server:
+    image: dys-server
+    working_dir: /home/steamsrv/dystopia/bin/linux32
+    command: ./srcds -game /home/steamsrv/dystopia/dystopia +log on -maxplayers 32 -ip 0.0.0.0 -port 27015 +map dys_vaccine
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - "27015:27015/tcp"
+      - "27015:27015/udp"
