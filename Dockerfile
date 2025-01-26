@@ -1,7 +1,5 @@
 FROM gameservers/steamcmd
 
-ADD server.cfg /tmp/server.cfg
-
 RUN steamcmd/steamcmd.sh +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit || true
 
 EXPOSE 27015
