@@ -9,8 +9,8 @@ USER steamsrv
 WORKDIR /home/steamsrv
 ENV HOME=/home/steamsrv
 
-RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit || true \
-    && chmod -R u+w /home/steamsrv/dystopia
+RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit; \
+    chmod -R u+w /home/steamsrv/dystopia
 
 COPY --chown=steamsrv:steamsrv dystopia-asm-fixes/server_srv.so /home/steamsrv/dystopia/bin/linux32/server_srv.so
 
