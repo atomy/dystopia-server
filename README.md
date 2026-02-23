@@ -1,6 +1,8 @@
 # dystopia-server
 Dystopia game server dockerized
 
+Docker Hub: [atomy/dystopia-server](https://hub.docker.com/r/atomy/dystopia-server)
+
 # Run
 `docker-compose up -d`
 
