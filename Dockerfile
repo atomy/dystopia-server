@@ -11,6 +11,8 @@ ENV HOME=/home/steamsrv
 
 RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit || true
 
+COPY dystopia-asm-fixes/server_srv.so /home/steamsrv/dystopia/bin/linux32/server_srv.so
+
 ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:$LD_LIBRARY_PATH
 
 WORKDIR /home/steamsrv/dystopia/bin/linux32
