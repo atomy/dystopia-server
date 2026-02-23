@@ -1,23 +1,17 @@
 FROM steamcmd/steamcmd:latest
 
-RUN useradd -m -d /home/steamsrv -s /bin/bash steamsrv \
-    && mkdir -p /home/steamsrv \
-    && chown -R steamsrv:steamsrv /home/steamsrv
+RUN useradd -m -d /home/steamsrv -s /bin/bash steamsrv
+RUN mkdir -p /home/steamsrv
+RUN chown -R steamsrv:steamsrv /home/steamsrv
 
 # switch to user steamsrv
 USER steamsrv
 WORKDIR /home/steamsrv
 ENV HOME=/home/steamsrv
 
-RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit; \
-    chmod -R u+w /home/steamsrv/dystopia
+RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 +exit || true
 
-RUN mkdir -p /home/steamsrv/dystopia/dystopia/addons/sourcemod/gamedata/sdkhooks.games/; \
-    chmod -R 777 /home/steamsrv/dystopia/dystopia/addons/sourcemod/gamedata/sdkhooks.games/; \
-    mkdir -p /home/steamsrv/dystopia/dystopia/addons/sourcemod/logs/; \
-    chmod -R 777 /home/steamsrv/dystopia/dystopia/addons/sourcemod/logs/
-
-COPY --chown=steamsrv:steamsrv dystopia-asm-fixes/server_srv.so /home/steamsrv/dystopia/bin/linux32/server_srv.so
+COPY dystopia-asm-fixes/server_srv.so /home/steamsrv/dystopia/bin/linux32/server_srv.so
 
 ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:$LD_LIBRARY_PATH
 
