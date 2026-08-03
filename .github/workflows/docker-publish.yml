@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Additional version tag for the image (e.g. 1.5.5)"
+        required: false
+        type: string
 
 jobs:
   build-and-push:
@@ -28,4 +33,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: atomy/dystopia-server:latest
+          tags: ${{ inputs.version != '' && format('atomy/dystopia-server:latest,atomy/dystopia-server:{0}', inputs.version) || 'atomy/dystopia-server:latest' }}
