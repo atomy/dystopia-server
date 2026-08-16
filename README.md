@@ -20,4 +20,3 @@ Fix permissions for sourcemod to write logs (host):
 
 # Rebuild container (optional)
 If you need to change anything in Dockerfile, you need to rebuild container: `docker build -t atomy/dystopia-server .`
-
