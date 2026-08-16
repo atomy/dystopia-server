@@ -10,7 +10,6 @@ RUN dpkg --add-architecture i386 \
       libstdc++6:i386 \
       lib32gcc-s1 \
       libcurl3-gnutls:i386 \
-      libtcmalloc-minimal4:i386 \
       libncurses5:i386 \
       libtinfo5:i386 \
       libsdl2-2.0-0:i386 \
@@ -35,7 +34,7 @@ RUN missing="$(LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:/home/steamsr
  && if [ -n "$missing" ]; then echo "ERROR: missing 32-bit libraries:" >&2; echo "$missing" >&2; exit 1; fi
 
 USER steamsrv
-ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:/home/steamsrv/dystopia/bin:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:/home/steamsrv/dystopia/bin
 
 RUN mkdir -p /home/steamsrv/.steam/sdk32 \
  && ln -s /home/steamsrv/dystopia/bin/linux32/steamclient.so /home/steamsrv/.steam/sdk32/steamclient.so
