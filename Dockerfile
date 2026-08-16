@@ -26,8 +26,6 @@ RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.2-
 # Verify the installation
 RUN ldconfig -p | grep -E "libtinfo.so.5|libncurses.so.5"
 
-COPY dystopia-asm-fixes/server_srv.so /home/steamsrv/dystopia/bin/linux32/server_srv.so
-
 USER steamsrv
 ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:$LD_LIBRARY_PATH
 
