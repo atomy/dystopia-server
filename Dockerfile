@@ -25,7 +25,7 @@ ENV HOME=/home/steamsrv
 
 RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 validate +quit || true \
  && test -d /home/steamsrv/dystopia/dystopia || { echo "ERROR: Steam install failed - /home/steamsrv/dystopia/dystopia not found"; exit 1; } \
- && test -x /home/steamsrv/dystopia/srcds_run || { echo "ERROR: srcds_run missing after Steam install"; exit 1; }
+ && test -x /home/steamsrv/dystopia/bin/linux32/srcds || { echo "ERROR: bin/linux32/srcds missing after Steam install"; ls -la /home/steamsrv/dystopia /home/steamsrv/dystopia/bin /home/steamsrv/dystopia/bin/linux32; exit 1; }
 
 USER root
 # Fail the build if a system library is still missing (same check as the server guide)
@@ -39,10 +39,11 @@ ENV LD_LIBRARY_PATH=/home/steamsrv/dystopia/bin/linux32:/home/steamsrv/dystopia/
 RUN mkdir -p /home/steamsrv/.steam/sdk32 \
  && ln -s /home/steamsrv/dystopia/bin/linux32/steamclient.so /home/steamsrv/.steam/sdk32/steamclient.so
 
-WORKDIR /home/steamsrv/dystopia
+WORKDIR /home/steamsrv/dystopia/bin/linux32
 
 EXPOSE 27015
 EXPOSE 27015/udp
 
 ENTRYPOINT []
-CMD ["./srcds_run", "-game", "dystopia", "-console", "-port", "27015", "+maxplayers", "32", "-ip", "0.0.0.0", "+map", "dys_vaccine", "+exec", "server.cfg", "+log", "on"]
+# App 17585 ships bin/linux32/srcds, not srcds_run. Absolute -game path is required (server guide §4).
+CMD ["./srcds", "-game", "/home/steamsrv/dystopia/dystopia", "-console", "-port", "27015", "+maxplayers", "32", "-ip", "0.0.0.0", "+map", "dys_vaccine", "+exec", "server.cfg", "+log", "on"]
