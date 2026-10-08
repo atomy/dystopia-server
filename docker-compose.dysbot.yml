@@ -1,0 +1,18 @@
+# Optional: AI bots (dysbot). Files live on the host in ${DYSBOT_DIR:-./dysbot-dist}, never in the image.
+# Use: docker compose -f docker-compose.yml -f docker-compose.dysbot.yml up -d
+# Long syntax with create_host_path: false so `up` fails if the files are missing,
+# instead of Docker creating empty directories in their place.
+services:
+  dys-server:
+    volumes:
+      - type: bind
+        source: ${DYSBOT_DIR:-./dysbot-dist}/dysbot.vdf
+        target: /home/steamsrv/dystopia/dystopia/addons/dysbot.vdf
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${DYSBOT_DIR:-./dysbot-dist}/dysbot
+        target: /home/steamsrv/dystopia/dystopia/addons/dysbot
+        bind:
+          create_host_path: false
