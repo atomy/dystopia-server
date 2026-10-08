@@ -23,7 +23,13 @@ USER steamsrv
 WORKDIR /home/steamsrv
 ENV HOME=/home/steamsrv
 
-RUN /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 validate +quit || true \
+# Steam buildid of app 17585, set by CI. A new value invalidates the cached install layer below,
+# otherwise a rebuild would reuse the old game files.
+ARG DYS_BUILDID=unknown
+LABEL dystopia.buildid=$DYS_BUILDID
+
+RUN echo "Installing Dystopia server build ${DYS_BUILDID}" \
+ && /usr/bin/steamcmd +force_install_dir /home/steamsrv/dystopia +login anonymous +app_update 17585 validate +quit || true \
  && test -d /home/steamsrv/dystopia/dystopia || { echo "ERROR: Steam install failed - /home/steamsrv/dystopia/dystopia not found"; exit 1; } \
  && test -x /home/steamsrv/dystopia/bin/linux32/srcds || { echo "ERROR: bin/linux32/srcds missing after Steam install"; ls -la /home/steamsrv/dystopia /home/steamsrv/dystopia/bin /home/steamsrv/dystopia/bin/linux32; exit 1; }
 

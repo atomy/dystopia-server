@@ -16,6 +16,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Look up Dystopia server build on Steam
+        id: steam
+        run: |
+          buildid="$(curl -fsS https://api.steamcmd.net/v1/info/17585 | jq -r '.data["17585"].depots.branches.public.buildid // empty')" || true
+          if [ -z "$buildid" ]; then
+            echo "::warning::Could not look up the Steam buildid, building without a build-* tag"
+          else
+            echo "Steam public buildid: $buildid"
+          fi
+          echo "buildid=$buildid" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -33,4 +44,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ inputs.version != '' && format('atomy/dystopia-server:latest,atomy/dystopia-server:{0}', inputs.version) || 'atomy/dystopia-server:latest' }}
+          build-args: |
+            DYS_BUILDID=${{ steps.steam.outputs.buildid || github.run_id }}
+          tags: |
+            atomy/dystopia-server:latest
+            ${{ steps.steam.outputs.buildid && format('atomy/dystopia-server:build-{0}', steps.steam.outputs.buildid) || '' }}
+            ${{ inputs.version && format('atomy/dystopia-server:{0}', inputs.version) || '' }}
